@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Session;
 use App\AdditionalClasses\CustomValidator;
 use App\AdditionalClasses\TagOptimization;
 
-### version: 1.0.1
+### version: 1.0.2
 class BaseController extends Controller
 {
     protected $parent;
@@ -286,6 +286,7 @@ class BaseController extends Controller
                     'title' => ' فهرست ' . $this->modulename['fa'],
                     'all' => $query->orderBy('id', 'DESC')->paginate(20)->withPath(CustomValidator::removeUrlParameter(URL::full(), 'page')),
                     'search' => true,
+		    'is_related_list' => true
                 ));
             }
 
@@ -504,12 +505,16 @@ class BaseController extends Controller
     /**
      * Seo Tag Optimization for html page
      *
-     * @param string $html
-     * @return false|string
+     * @param string|null $html
+     * @return \Illuminate\Http\RedirectResponse|null
      */
-    public function SeoTagOptimization(string $html)
+    public function SeoTagOptimization(string $html = null)
     {
-        $instance = new TagOptimization();
-        return $instance->SeoTagOptimization($html);
+        if ($html) {
+            $instance = new TagOptimization();
+            $result = $instance->SeoTagOptimization($html);
+        }
+
+        return $result ?? null;
     }
 }
