@@ -1,0 +1,24 @@
+.toast-container {
+    z-index: 99;
+}
+.toast-danger {
+    background-color: #cc0e00;
+    color: #fff4f4;
+}
+.toast-success {
+    background-color: #13A287;
+    color: #fff4f4;
+}
+.toast-warning {
+    background-color: #F9A825;
+    color: #fff4f4;
+}
+.position-fix {
+    position: fixed;
+}
+.end-0 {
+    right: 0;
+}
+.bottom-0 {
+    bottom: 0;
+}

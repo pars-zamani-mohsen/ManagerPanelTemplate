@@ -1,0 +1,168 @@
+/* fallback */
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../webfonts/mi.woff2') format('woff2');
+  }
+  
+  .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @font-face {
+    font-family: IRANSansX;
+    font-style: normal;
+    font-weight: 100;
+    src: url('../webfonts/IRANSansXFaNum-thin.woff2') format('woff'),   
+    url('../webfonts/IRANSansXFaNum-thin.woff2') format('woff2');		
+  }
+  
+  @font-face {
+    font-family: IRANSansX;
+    font-style: normal;
+    font-weight: 200;
+    src: url('../webfonts/IRANSansXFaNum-UltraLight.woff') format('woff'),   
+    url('../webfonts/IRANSansXFaNum-UltraLight.woff2') format('woff2');	
+  }
+  
+  @font-face {
+    font-family: IRANSansX;
+    font-style: normal;
+    font-weight: 300;
+    src: url('../webfonts/IRANSansXFaNum-light.woff') format('woff'),   
+    url('../webfonts/IRANSansXFaNum-light.woff2') format('woff2');		 
+  }
+  
+  @font-face {
+    font-family: IRANSansX;
+    font-style: normal;
+    font-weight: 500;
+    src: url('../webfonts/IRANSansXFaNum-medium.woff') format('woff'),   
+    url('../webfonts/IRANSansXFaNum-medium.woff2') format('woff2');		 
+  }
+  
+  @font-face {
+    font-family: IRANSansX;
+    font-style: normal;
+    font-weight: 600;
+    src: url('../webfonts/IRANSansXFaNum-demibold.woff') format('woff'),   
+    url('../webfonts/IRANSansXFaNum-demibold.woff2') format('woff2');	 
+  }
+  
+  @font-face {
+    font-family: IRANSansX;
+    font-style: normal;
+    font-weight: 800;
+    src: url('../webfonts/IRANSansXFaNum-extrabold.woff') format('woff'),   
+    url('../webfonts/IRANSansXFaNum-extrabold.woff2') format('woff2');		 
+  }
+  
+  @font-face {
+    font-family: IRANSansX;
+    font-style: normal;
+    font-weight: 900;
+    src: url('../webfonts/IRANSansXFaNum-black.woff') format('woff'),   
+    url('../webfonts/IRANSansXFaNum-black.woff2') format('woff2');		 
+  }
+  
+  @font-face {
+    font-family: IRANSansX;
+    font-style: normal;
+    font-weight: bold;
+    src: url('../webfonts/IRANSansXFaNum-bold.woff') format('woff'),   
+    url('../webfonts/IRANSansXFaNum-bold.woff2') format('woff2');	 
+  }
+  
+  @font-face {
+    font-family: IRANSansX;
+    font-style: normal;
+    font-weight: normal;
+    src: url('../webfonts/IRANSansXFaNum-regular.woff') format('woff'),   
+    url('../webfonts/IRANSansXFaNum-regular.woff2') format('woff2');	
+  }
+  @font-face {
+    font-family: "pars";
+    src: url("../webfonts/pars.eot");
+    src: url("../webfonts/pars.eot?#iefix") format("embedded-opentype"), url("../webfonts//pars.woff")
+        format("woff"), url("../webfonts/pars.ttf") format("truetype"), url("../webfonts/pars.svg#icomoon")
+        format("svg");
+    font-weight: normal;
+    font-style: normal;
+    speak: never;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+  }
+
+  .pars-education:before {
+    content: "\e900";
+    color: #8f90a6;
+  }
+  .pars-eye:before {
+    content: "\e901";
+    color: #8f90a6;
+  }
+  .pars-facebook2:before {
+    content: "\e902";
+  }
+  .pars-federal-skill:before {
+    content: "\e903";
+    color: #8f90a6;
+  }
+  .pars-instagram2:before {
+    content: "\e904";
+  }
+  .pars-job-visa:before {
+    content: "\e905";
+    color: #8f90a6;
+  }
+  .pars-linkedin2:before {
+    content: "\e906";
+  }
+  .pars-money:before {
+    content: "\e907";
+    color: #8f90a6;
+  }
+  .pars-plus:before {
+    content: "\e908";
+    color: #8f90a6;
+  }
+  .pars-student-visa:before {
+    content: "\e909";
+    color: #8f90a6;
+  }
+  .pars-telegram2:before {
+    content: "\e90a";
+  }
+  .pars-youtube:before {
+    content: "\e90b";
+    color: #8f90a6;
+  }
+  
+  
+  
+  .pars-education,.pars-facebook2,.pars-federal-skill,
+  .pars-instagram2,.pars-job-visa,.pars-linkedin2,
+  .pars-money,.pars-network,.pars-student-visa,
+  .pars-telegram2,.pars-youtube {
+    font-family: 'pars'!important;
+    font-style:normal!important;
+    font-size:42px;
+  }
+  
