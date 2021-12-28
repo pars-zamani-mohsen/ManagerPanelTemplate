@@ -3,8 +3,8 @@
 
 namespace App\AdditionalClasses;
 
-
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class CustomValidator
 {
@@ -42,5 +42,26 @@ class CustomValidator
         unset($qsvars[$parameter]);
         $newqs = http_build_query($qsvars);
         return $urlpart . '?' . $newqs;
+    }
+
+    /**
+     * Store file from URL
+     *
+     * @param string $filename
+     * @param string $url
+     * @param string $path
+     * @return bool
+     */
+    public function store_file(string $filename, string $url, string $path): bool
+    {
+        try {
+            $path = "files/$path/$filename";
+            if (!Storage::disk('public')->exists($path)) {
+                $result = Storage::disk('public')->put($path, file_get_contents($url)); //storage: 'public' | 'local'
+            }
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+        return $result ?? false;
     }
 }

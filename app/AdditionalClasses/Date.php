@@ -1,7 +1,7 @@
 <?php namespace App\AdditionalClasses;
 
-use Morilog\Jalali\Jalalian;
 use Morilog\Jalali\CalendarUtils;
+use Morilog\Jalali\Jalalian;
 
 class Date
 {
@@ -43,7 +43,7 @@ class Date
             $PersianDatetimeArray = explode(' ', Date::convertPersianNumToEnglish($date));
             $PersianDateArray = explode('/', Date::convertPersianNumToEnglish(str_replace('-', '/', $PersianDatetimeArray[0])));
             $MiladiDateArray = CalendarUtils::toGregorian($PersianDateArray[0], $PersianDateArray[1], $PersianDateArray[2]);
-            $MiladiDateString = implode($MiladiDateArray, '-') . ' ' . $PersianDatetimeArray[1];
+            $MiladiDateString = implode('-', $MiladiDateArray) . ' ' . $PersianDatetimeArray[1];
             $timestamp = strtotime($MiladiDateString);
         } else {
             $timestamp = time();
@@ -62,7 +62,7 @@ class Date
         if ($date) {
             $PersianDateArray = explode('/', Date::convertPersianNumToEnglish(str_replace('-', '/', $date)));
             $MiladiDateArray = CalendarUtils::toGregorian($PersianDateArray[0], $PersianDateArray[1], $PersianDateArray[2]);
-            $MiladiDateString = implode($MiladiDateArray, '-');
+            $MiladiDateString = implode('-', $MiladiDateArray);
             $timestamp = strtotime($MiladiDateString);
         } else {
             $timestamp = time();
@@ -103,11 +103,11 @@ class Date
         $result = Jalalian::forge($timestamp)->format('%Y/%m/%d H:i:s');
         return Date::convertPersianNumToEnglish($result);
     }
-
+    
     /**
      * @param $timestamp
      * @return array|string|string[]
-     */
+    */
     public static function timestampToShamsiEng($timestamp)
     {
         if (!$timestamp) $timestamp = time();
