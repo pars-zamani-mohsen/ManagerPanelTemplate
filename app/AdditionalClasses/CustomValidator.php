@@ -52,7 +52,7 @@ class CustomValidator
      * @param string $path
      * @return bool
      */
-    public function store_file(string $filename, string $url, string $path): bool
+    public static function store_file(string $filename, string $url, string $path): bool
     {
         try {
             $path = "files/$path/$filename";
