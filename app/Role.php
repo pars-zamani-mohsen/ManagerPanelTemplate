@@ -72,7 +72,7 @@ class Role extends LaratrustRole
      */
     public function _find($id)
     {
-        return Role::find($id);
+        return ("\App\\" . self::$modulename['model'])::find($id);
     }
 
     /**
@@ -83,7 +83,7 @@ class Role extends LaratrustRole
      */
     public function fetchAll_paginate($limit)
     {
-        return Role::select(self::$modulefields)->orderBy('id', 'DESC')->paginate($limit);
+        return ("\App\\" . self::$modulename['model'])::select(self::$modulefields)->orderBy('id', 'DESC')->paginate($limit);
     }
 
     /**
@@ -92,7 +92,7 @@ class Role extends LaratrustRole
      */
     public function fetchAll()
     {
-        return Role::orderBy('id', 'DESC')->get();
+        return ("\App\\" . self::$modulename['model'])::orderBy('id', 'DESC')->get();
     }
 
     /**
@@ -101,7 +101,7 @@ class Role extends LaratrustRole
      */
     public static function fetchAll_active()
     {
-        return Role::orderBy('id', 'DESC')->get();
+        return ("\App\\" . self::$modulename['model'])::orderBy('id', 'DESC')->get();
     }
 
     /**
@@ -111,7 +111,7 @@ class Role extends LaratrustRole
      */
     public static function getRoleName($id)
     {
-        $role = Role::select('name')->find($id);
+        $role = ("\App\\" . self::$modulename['model'])::select('name')->find($id);
         return $role->name;
     }
 
@@ -122,7 +122,7 @@ class Role extends LaratrustRole
      */
     public static function getRoleLable($id)
     {
-        $role = Role::select('display_name')->find($id);
+        $role = ("\App\\" . self::$modulename['model'])::select('display_name')->find($id);
         return $role->display_name;
     }
 
@@ -132,7 +132,7 @@ class Role extends LaratrustRole
      */
     public static function getRole()
     {
-        return Role::select('id', 'name', 'display_name')->orderBy('id', 'ASC')->get();
+        return ("\App\\" . self::$modulename['model'])::select('id', 'name', 'display_name')->orderBy('id', 'ASC')->get();
     }
 
     /**

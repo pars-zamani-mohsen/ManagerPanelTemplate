@@ -66,7 +66,7 @@ class PermissionToRole extends Model
      */
     public function _find(int $role_id, int $permission_id)
     {
-        return PermissionToRole::where('role_id', $role_id)->where('permission_id', $permission_id)->first();
+        return ("\App\\" . self::$modulename['model'])::where('role_id', $role_id)->where('permission_id', $permission_id)->first();
     }
 
     /**
@@ -77,7 +77,7 @@ class PermissionToRole extends Model
      */
     public function _findRoles(int $id)
     {
-        return PermissionToRole::where('role_id', $id)->get();
+        return ("\App\\" . self::$modulename['model'])::where('role_id', $id)->get();
     }
 
     /**
@@ -88,7 +88,7 @@ class PermissionToRole extends Model
      */
     public function _findPermissions(int $id)
     {
-        return PermissionToRole::where('permission_id', $id)->get();
+        return ("\App\\" . self::$modulename['model'])::where('permission_id', $id)->get();
     }
 
     /**
@@ -99,7 +99,7 @@ class PermissionToRole extends Model
      */
     public function fetchPermissionByRoleId(int $id)
     {
-        return PermissionToRole::where('role_id', $id)->pluck('permission_id');
+        return ("\App\\" . self::$modulename['model'])::where('role_id', $id)->pluck('permission_id');
     }
 
     /**
@@ -110,7 +110,7 @@ class PermissionToRole extends Model
      */
     public function fetchAll_paginate($limit)
     {
-        return PermissionToRole::select(self::$modulefields)->with(['role', 'permission'])->orderBy('role_id', 'DESC')->paginate($limit);
+        return ("\App\\" . self::$modulename['model'])::select(self::$modulefields)->with(['role', 'permission'])->orderBy('role_id', 'DESC')->paginate($limit);
     }
 
     /**
@@ -119,7 +119,7 @@ class PermissionToRole extends Model
      */
     public function fetchAll()
     {
-        return PermissionToRole::orderBy('role_id', 'DESC')->all();
+        return ("\App\\" . self::$modulename['model'])::orderBy('role_id', 'DESC')->all();
     }
 
     /**
@@ -128,7 +128,7 @@ class PermissionToRole extends Model
      */
     public static function fetchAll_active()
     {
-        return PermissionToRole::orderBy('role_id', 'DESC')->get();
+        return ("\App\\" . self::$modulename['model'])::orderBy('role_id', 'DESC')->get();
     }
 
     /**

@@ -99,7 +99,7 @@ class Blog extends Model
      */
     public function _find($id)
     {
-        return Blog::find($id);
+        return ("\App\\" . self::$modulename['model'])::find($id);
     }
 
     /**
@@ -108,7 +108,7 @@ class Blog extends Model
      */
     public function fetchAll()
     {
-        return Blog::orderBy('id', 'DESC')->get();
+        return ("\App\\" . self::$modulename['model'])::orderBy('id', 'DESC')->get();
     }
 
     /**
@@ -119,7 +119,7 @@ class Blog extends Model
      */
     public function fetchAll_paginate($limit)
     {
-        return Blog::with(['publisher'])->orderBy('id', 'DESC')->paginate($limit);
+        return ("\App\\" . self::$modulename['model'])::with(['publisher'])->orderBy('id', 'DESC')->paginate($limit);
     }
 
     /**
@@ -128,7 +128,7 @@ class Blog extends Model
      */
     public static function fetchAll_active()
     {
-        return Blog::active()->orderBy('id', 'DESC')->get();
+        return ("\App\\" . self::$modulename['model'])::active()->orderBy('id', 'DESC')->get();
     }
 
     /**
@@ -139,7 +139,7 @@ class Blog extends Model
      */
     public function fetchAll_paginate_limited_columns($limit)
     {
-        return Blog::select(self::$modulefields)->with(['publisher'])->orderBy('id', 'DESC')->paginate($limit);
+        return ("\App\\" . self::$modulename['model'])::select(self::$modulefields)->with(['publisher'])->orderBy('id', 'DESC')->paginate($limit);
     }
 
     /**
@@ -148,7 +148,7 @@ class Blog extends Model
      */
     public static function fetchAll_active_limited_columns()
     {
-        return Blog::select(self::$modulefields)->active()->get();
+        return ("\App\\" . self::$modulename['model'])::select(self::$modulefields)->active()->get();
     }
 
     /**
@@ -159,7 +159,7 @@ class Blog extends Model
      */
     public static function fetch_allTrush_limited_columns(int $limit)
     {
-        return Blog::select('id', 'title', 'created_at', 'deleted_at', 'created_by')->onlyTrashed()->orderBy('id', 'DESC')->paginate($limit);
+        return ("\App\\" . self::$modulename['model'])::select('id', 'title', 'created_at', 'deleted_at', 'created_by')->onlyTrashed()->orderBy('id', 'DESC')->paginate($limit);
     }
 
 

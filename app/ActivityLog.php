@@ -58,7 +58,7 @@ class ActivityLog extends Model
      */
     public function _find($id)
     {
-        return ActivityLog::find($id);
+        return ("\App\\" . self::$modulename['model'])::find($id);
     }
 
     /**
@@ -67,7 +67,7 @@ class ActivityLog extends Model
      */
     public function fetchAll()
     {
-        return ActivityLog::orderBy('id', 'DESC')->get();
+        return ("\App\\" . self::$modulename['model'])::orderBy('id', 'DESC')->get();
     }
 
     /**
@@ -78,7 +78,7 @@ class ActivityLog extends Model
      */
     public function fetchAll_paginate($limit)
     {
-        return ActivityLog::with('user')->orderBy('id', 'DESC')->paginate($limit);
+        return ("\App\\" . self::$modulename['model'])::with('user')->orderBy('id', 'DESC')->paginate($limit);
     }
 
     /**
@@ -87,7 +87,7 @@ class ActivityLog extends Model
      */
     public static function fetchAll_active()
     {
-        return ActivityLog::orderBy('id', 'DESC')->get();
+        return ("\App\\" . self::$modulename['model'])::orderBy('id', 'DESC')->get();
     }
 
     /**
@@ -98,7 +98,7 @@ class ActivityLog extends Model
      */
     public static function fetch_allTrush_limited_columns(int $limit)
     {
-        return ActivityLog::select('id', 'model AS title', 'created_at', 'deleted_at', 'user_id AS created_by')->onlyTrashed()->orderBy('id', 'DESC')->paginate($limit);
+        return ("\App\\" . self::$modulename['model'])::select('id', 'model AS title', 'created_at', 'deleted_at', 'user_id AS created_by')->onlyTrashed()->orderBy('id', 'DESC')->paginate($limit);
     }
 
     # Relations

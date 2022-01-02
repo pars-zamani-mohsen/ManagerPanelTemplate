@@ -104,7 +104,7 @@ class User extends Authenticatable
      */
     public static function getUser($user_id)
     {
-        $user = User::find($user_id);
+        $user = ("\App\\" . self::$modulename['model'])::find($user_id);
         if ($user) {
             return $user;
         }
@@ -140,7 +140,7 @@ class User extends Authenticatable
      */
     public function _find($id)
     {
-        return User::find($id);
+        return ("\App\\" . self::$modulename['model'])::find($id);
     }
 
     /**
@@ -149,7 +149,7 @@ class User extends Authenticatable
      */
     public function fetchAll()
     {
-        return User::orderBy('id', 'DESC')->get();
+        return ("\App\\" . self::$modulename['model'])::orderBy('id', 'DESC')->get();
     }
 
     /**
@@ -160,7 +160,7 @@ class User extends Authenticatable
      */
     public function fetchAll_paginate($limit)
     {
-        return User::with(['publisher', 'role'])->orderBy('id', 'DESC')->paginate($limit);
+        return ("\App\\" . self::$modulename['model'])::with(['publisher', 'role'])->orderBy('id', 'DESC')->paginate($limit);
     }
 
     /**
@@ -169,7 +169,7 @@ class User extends Authenticatable
      */
     public static function fetchAll_active()
     {
-        return User::active()->orderBy('id', 'DESC')->get();
+        return ("\App\\" . self::$modulename['model'])::active()->orderBy('id', 'DESC')->get();
     }
 
     /**
@@ -180,7 +180,7 @@ class User extends Authenticatable
      */
     public static function fetch_allTrush_limited_columns(int $limit)
     {
-        return User::select('id', 'name', 'created_at', 'deleted_at', 'created_by')->onlyTrashed()->orderBy('id', 'DESC')->paginate($limit);
+        return ("\App\\" . self::$modulename['model'])::select('id', 'name', 'created_at', 'deleted_at', 'created_by')->onlyTrashed()->orderBy('id', 'DESC')->paginate($limit);
     }
 
     # Relations
