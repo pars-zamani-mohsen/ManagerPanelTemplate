@@ -11,6 +11,102 @@ use Illuminate\Support\Facades\Session;
 class TagOptimization
 {
     /**
+     * Laravel live form optimization
+     *
+     * @param string $html_text
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function LaravelLiveFormOptimization(string $html_text)
+    {
+        try {
+            // create new DOMDocument
+            $document = new DOMDocument('1.0', 'UTF-8');
+
+            // set error level
+            $internalErrors = libxml_use_internal_errors(true);
+
+            // load HTML
+            $document->loadHTML(mb_convert_encoding($html_text, 'HTML-ENTITIES', 'UTF-8'));
+
+            $document->preserveWhiteSpace = false;
+
+            // Restore error level
+            libxml_use_internal_errors($internalErrors);
+            $document = $this->FormUrlOptimization($document);
+            $document = $this->TokenTagOptimization($document);
+
+            return $document->saveHTML(); // saveXML // saveHTML
+
+        } catch (\Exception $e) {
+            Session::flash('alert', $e->getMessage());
+            return redirect()->back();
+        }
+    }
+
+    /**
+     * Laravel form tag dynamic action
+     *
+     * @param $document
+     * @return \Illuminate\Http\RedirectResponse|mixed
+     */
+    private function FormUrlOptimization($document)
+    {
+        try {
+            foreach ($document->getElementsByTagName('form') as $a_element) {
+                /*
+                    help for dom: https://www.php.net/manual/en/class.domdocument.php
+                */
+                $element['action'] = $a_element->getAttribute('action');
+                $element['method'] = $a_element->getAttribute('method');
+                $a_element->setAttribute("action", \url($element['action'] ));
+            }
+
+            return $document;
+
+        } catch (\Exception $e) {
+            Session::flash('alert', $e->getMessage());
+            return redirect()->back();
+        }
+    }
+
+    /**
+     * Laravel token input tag optimized
+     *
+     * @param $document
+     * @return \Illuminate\Http\RedirectResponse|mixed
+     */
+    private function TokenTagOptimization($document)
+    {
+        try {
+            foreach ($document->getElementsByTagName('input') as $a_element) {
+                /*
+                    help for dom: https://www.php.net/manual/en/class.domdocument.php
+                */
+                $element['type'] = $a_element->getAttribute('type');
+                $element['name'] = $a_element->getAttribute('name');
+                $element['value'] = $a_element->getAttribute('value');
+
+                /* check href link */
+                if ($element['name'] == '_token' && $element['type'] == 'hidden') {
+                    $_tag = $document->createElement('input');
+                    $_tag->nodeValue = $a_element->nodeValue;
+                    $_tag->setAttribute('type', $element['type']);
+                    $_tag->setAttribute('name', $element['name']);
+                    $_tag->setAttribute('value', csrf_token());
+
+                    $a_element->parentNode->replaceChild($_tag, $a_element);
+                }
+            }
+
+            return $document;
+
+        } catch (\Exception $e) {
+            Session::flash('alert', $e->getMessage());
+            return redirect()->back();
+        }
+    }
+
+    /**
      * Seo: Check tags and optimization
      *
      * @param string $html_text
@@ -27,13 +123,11 @@ class TagOptimization
 
             // load HTML
             $document->loadHTML(mb_convert_encoding($html_text, 'HTML-ENTITIES', 'UTF-8'));
-            /*        $document->loadHTML('<?xml encoding="utf-8"?> ' . $html_text);*/
 
             $document->preserveWhiteSpace = false;
 
             // Restore error level
             libxml_use_internal_errors($internalErrors);
-
             $document = $this->SeoATagOptimization($document);
             $document = $this->SeoImgTagOptimization($document);
 
@@ -51,12 +145,12 @@ class TagOptimization
      * @param $document
      * @return mixed
      */
-    public function SeoATagOptimization($document)
+    private function SeoATagOptimization($document)
     {
         try {
             foreach ($document->getElementsByTagName('a') as $a_element) {
                 /*
-                    help for dom: https://www.php.net/manual/en/class.domelement.php
+                    help for dom: https://www.php.net/manual/en/class.domdocument.php
                 */
                 $href = $a_element->getAttribute('href');
                 $class = $a_element->getAttribute('class');
@@ -90,17 +184,17 @@ class TagOptimization
                     }
                 }
 
-                $link = $document->createElement('a');
-                $link->nodeValue = $a_element->nodeValue;
-                $link->setAttribute('href', $href);
-                if ($class) $link->setAttribute('class', $class);
-                if ($style) $link->setAttribute('style', $style);
-                if ($target) $link->setAttribute('target', $target);
-                if ($rel) $link->setAttribute('rel', $rel);
-                if ($data_anchor) $link->setAttribute('data-anchor', $data_anchor);
-                if ($title) $link->setAttribute('title', $title);
+                $_tag = $document->createElement('a');
+                $_tag->nodeValue = $a_element->nodeValue;
+                $_tag->setAttribute('href', $href);
+                if ($class) $_tag->setAttribute('class', $class);
+                if ($style) $_tag->setAttribute('style', $style);
+                if ($target) $_tag->setAttribute('target', $target);
+                if ($rel) $_tag->setAttribute('rel', $rel);
+                if ($data_anchor) $_tag->setAttribute('data-anchor', $data_anchor);
+                if ($title) $_tag->setAttribute('title', $title);
 
-                $a_element->parentNode->replaceChild($link, $a_element);
+                $a_element->parentNode->replaceChild($_tag, $a_element);
             }
 
             return $document;
@@ -117,12 +211,12 @@ class TagOptimization
      * @param $document
      * @return mixed
      */
-    public function SeoImgTagOptimization($document)
+    private function SeoImgTagOptimization($document)
     {
         try {
             foreach ($document->getElementsByTagName('img') as $a_element) {
                 /*
-                    help for dom: https://www.php.net/manual/en/class.domelement.php
+                    help for dom: https://www.php.net/manual/en/class.domdocument.php
                 */
                 $src = $a_element->getAttribute('src');
                 $class = $a_element->getAttribute('class');
@@ -133,17 +227,17 @@ class TagOptimization
                 $height = $a_element->getAttribute('height');
 
                 /* create new element */
-                $link = $document->createElement('img');
-                $link->setAttribute('src', $src);
-                if ($class) $link->setAttribute('class', $class);
-                if ($style) $link->setAttribute('style', $style);
-                if ($title) $link->setAttribute('title', $title);
-                if ($alt) $link->setAttribute('alt', $alt);
-                if ($width) $link->setAttribute('width', $width);
-                if ($height) $link->setAttribute('height', $height);
-                $link->setAttribute('loading', "lazy");
+                $_tag = $document->createElement('img');
+                $_tag->setAttribute('src', $src);
+                if ($class) $_tag->setAttribute('class', $class);
+                if ($style) $_tag->setAttribute('style', $style);
+                if ($title) $_tag->setAttribute('title', $title);
+                if ($alt) $_tag->setAttribute('alt', $alt);
+                if ($width) $_tag->setAttribute('width', $width);
+                if ($height) $_tag->setAttribute('height', $height);
+                $_tag->setAttribute('loading', "lazy");
 
-                $a_element->parentNode->replaceChild($link, $a_element);
+                $a_element->parentNode->replaceChild($_tag, $a_element);
             }
 
             return $document;
@@ -154,3 +248,4 @@ class TagOptimization
         }
     }
 }
+

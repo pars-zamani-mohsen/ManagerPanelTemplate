@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\ActivityLog;
 use Illuminate\Http\Request;
 use App\AdditionalClasses\Date;
-use App\AdditionalClasses\Schema;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\AdditionalClasses\CustomValidator;
-use App\AdditionalClasses\TagOptimization;
 
 ### version: 1.0.2
 class BaseController extends Controller
@@ -243,8 +240,9 @@ class BaseController extends Controller
 
     /**
      * Search
-     * @param Request $request Id, title, date and ...
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * 
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View|null
      */
     public function search(Request $request)
     {
@@ -300,10 +298,11 @@ class BaseController extends Controller
 
     /**
      * Upload file
-     *
+     * 
      * @param $request
      * @param $modulename
-     * @return string|null
+     * @param $requestFileName
+     * @return \Illuminate\Http\RedirectResponse|string
      */
     public function uploadfile($request, $modulename, $requestFileName = 'file')
     {
@@ -374,14 +373,14 @@ class BaseController extends Controller
 
     /**
      * Fetch history for record
-     *
+     * 
      * @param $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function getHistory($id)
     {
         try {
-            $activityLog = ActivityLog::with(['user'])->where('model', $this->modulename['model'])->where('subject_id', $id)->orderBy('id')->get();
+            $activityLog = \App\ActivityLog::with(['user'])->where('model', $this->modulename['model'])->where('subject_id', $id)->orderBy('id')->get();
             $_history = array();
             foreach ($activityLog as $key => $item) {
                 if ($item['log_type'] == 'update') {
@@ -449,72 +448,5 @@ class BaseController extends Controller
             return redirect()->back();
         }
     }
-
-    /**
-     * Add tags relation
-     *
-     * @param array $tags
-     * @param int $record_id
-     * @param string $modelname
-     * @return bool|\Illuminate\Http\RedirectResponse
-     */
-    public function add_tag_relation(array $tags, int $record_id, string $modelname)
-    {
-        try {
-            \App\Tag_rel::where('record_id', $record_id)->where('model', $modelname)->delete();
-
-            foreach ($tags as $item) {
-                $instance = new \App\Tag_rel();
-                $instance->tag_id = $item;
-                $instance->record_id = $record_id;
-                $instance->model = $modelname;
-                $instance->save();
-            }
-            return true;
-
-        } catch (\Exception $e) {
-            Session::flash('alert', $e->getMessage());
-            return redirect()->back();
-        }
-    }
-
-    /**
-     * Get schema
-     *
-     * @param $instance
-     * @param string $type 'Article'|'BlogPosting'|'NewsArticle'|'FAQ'|'Video'|'Breadcrumb'
-     * @return array|mixed|null
-     */
-    public function getSchema($instance, string $type = 'Article')
-    {
-        $_instance = new Schema();
-        switch ($type) {
-            case 'Article' : $result = $_instance->createArticleBlogSchema($instance, $type); break;
-            case 'BlogPosting' : $result = $_instance->createArticleBlogSchema($instance, $type); break;
-            case 'NewsArticle' : $result = $_instance->createArticleBlogSchema($instance, $type); break;
-            case 'FAQ' : $result = $_instance->createFAQSchema($instance); break;
-            case 'Video' : $result = $_instance->createVideoSchema($instance); break;
-            case 'Breadcrumb' : $result = $_instance->createBreadcrumbSchema($instance); break;
-            default : $result = null;
-        }
-
-//        return $result;
-        return '<script type="application/ld+json">' . json_encode($result) . '</script>';
-    }
-
-    /**
-     * Seo Tag Optimization for html page
-     *
-     * @param string|null $html
-     * @return \Illuminate\Http\RedirectResponse|null
-     */
-    public function SeoTagOptimization(string $html = null)
-    {
-        if ($html) {
-            $instance = new TagOptimization();
-            $result = $instance->SeoTagOptimization($html);
-        }
-
-        return $result ?? null;
-    }
 }
+
