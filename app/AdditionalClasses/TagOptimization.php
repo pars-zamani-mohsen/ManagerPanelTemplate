@@ -14,9 +14,10 @@ class TagOptimization
      * Laravel live form optimization
      *
      * @param string $html_text
+     * @param bool $addCaptcha
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function LaravelLiveFormOptimization(string $html_text)
+    public function LaravelLiveFormOptimization(string $html_text, bool $addCaptcha = false)
     {
         try {
             // create new DOMDocument
@@ -34,6 +35,7 @@ class TagOptimization
             libxml_use_internal_errors($internalErrors);
             $document = $this->FormUrlOptimization($document);
             $document = $this->TokenTagOptimization($document);
+            if ($addCaptcha) $document = $this->ImgUrlOptimization($document);
 
             return $document->saveHTML(); // saveXML // saveHTML
 
@@ -59,6 +61,31 @@ class TagOptimization
                 $element['action'] = $a_element->getAttribute('action');
                 $element['method'] = $a_element->getAttribute('method');
                 $a_element->setAttribute("action", \url($element['action'] ));
+            }
+
+            return $document;
+
+        } catch (\Exception $e) {
+            Session::flash('alert', $e->getMessage());
+            return redirect()->back();
+        }
+    }
+
+    /**
+     * Laravel img tag dynamic action
+     *
+     * @param $document
+     * @return \Illuminate\Http\RedirectResponse|mixed
+     */
+    private function ImgUrlOptimization($document)
+    {
+        try {
+            foreach ($document->getElementsByTagName('img') as $a_element) {
+                /*
+                    help for dom: https://www.php.net/manual/en/class.domdocument.php
+                */
+//                $element['src'] = $a_element->getAttribute('src');
+                $a_element->setAttribute("src", captcha_src('math'));
             }
 
             return $document;
@@ -248,4 +275,3 @@ class TagOptimization
         }
     }
 }
-

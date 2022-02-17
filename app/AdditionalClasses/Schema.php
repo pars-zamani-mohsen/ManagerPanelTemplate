@@ -15,7 +15,7 @@ class Schema
      *
      * @param $instance
      * @param string $type 'Article'|'BlogPosting'|'NewsArticle'
-     * @return array|\Illuminate\Http\RedirectResponse|null
+     * @return \Illuminate\Http\RedirectResponse|string|null
      */
     public function createArticleBlogSchema($instance, string $type = 'Article')
     {
@@ -39,19 +39,21 @@ class Schema
                 'datePublished' => Date::timestampToShamsiWithDay_andNameOfMonth($instance->created_at),
                 'dateModified' => Date::timestampToShamsiWithDay_andNameOfMonth($instance->updated_at),
             );
-            return $schema;
 
         } catch (\Exception $e) {
             Session::flash('alert', $e->getMessage());
             return redirect()->back();
         }
+
+        //        return $schema;
+        return '<script type="application/ld+json">' . json_encode($schema) . '</script>';
     }
 
     /**
      * Create schema for FAQ Page
      *
      * @param $instance
-     * @return array|\Illuminate\Http\RedirectResponse|null
+     * @return \Illuminate\Http\RedirectResponse|string|null
      */
     public function createFAQSchema($instance)
     {
@@ -72,25 +74,26 @@ class Schema
                 '@type' => 'FAQPage',
                 'mainEntity' => $faq,
             );
-            return $schema;
 
         } catch (\Exception $e) {
             Session::flash('alert', $e->getMessage());
             return redirect()->back();
         }
+
+//        return $schema;
+        return '<script type="application/ld+json">' . json_encode($schema) . '</script>';
     }
 
     /**
      * Create schema for video object
      *
      * @param $instance
-     * @return array|\Illuminate\Http\RedirectResponse|null
+     * @return \Illuminate\Http\RedirectResponse|string|null
      */
     public function createVideoSchema($instance)
     {
         try {
             if (!$instance) return null;
-
             $schema = array(
                 '@context' => 'https://schema.org',
                 '@type' => 'VideoObject',
@@ -113,54 +116,53 @@ class Schema
 //            ),
             );
 
-            return $schema;
-
         } catch (\Exception $e) {
             Session::flash('alert', $e->getMessage());
             return redirect()->back();
         }
+
+        return '<script type="application/ld+json">' . json_encode($schema) . '</script>';
     }
 
     /**
      * Create schema for Breadcrumb
      *
      * @param $instance
-     * @return array|\Illuminate\Http\RedirectResponse|null
+     * @return \Illuminate\Http\RedirectResponse|string|null
      */
     public function createBreadcrumbSchema($instance)
     {
         try {
             if (!$instance) return null;
-
-            $i = 1;
             $listItem = array();
-            foreach ($instance as $item) {
+            foreach ($instance as $key => $item) {
                 $listItem[] = array(
                     '@type' => 'ListItem',
-                    'position' => $i,
-                    'name' => $item->title,
-                    'item' => URL::to('/') . '/' . $item->slug,
+                    'position' => ++$key,
+                    'name' => $item['title'],
+                    'item' => ($item['slug']) ? $item['slug'] : '',
                 );
-                $i++;
             }
-
             $schema = array(
                 '@context' => 'https://schema.org',
                 '@type' => 'BreadcrumbList',
                 'itemListElement' => $listItem,
             );
-            return $schema;
 
         } catch (\Exception $e) {
             Session::flash('alert', $e->getMessage());
             return redirect()->back();
         }
+
+//        return $schema;
+        return '<script type="application/ld+json">' . json_encode($schema) . '</script>';
     }
 
     /**
      * Create time interval
+     *
      * @param int $second
-     * @return string
+     * @return \Illuminate\Http\RedirectResponse|string
      * @Example PT01M13S
      */
     public function createTimeInterval(int $second)
@@ -169,11 +171,12 @@ class Schema
             $minutes = floor($second / 60);
             $second_m = $second % 60;
             $minutes = (strlen((string) floor($second / 60)) == 1) ? '0' . floor($second / 60) : floor($second / 60);
-            return 'PT'.$minutes.'M'.$second_m.'S';
 
         } catch (\Exception $e) {
             Session::flash('alert', $e->getMessage());
             return redirect()->back();
         }
+
+        return 'PT'.$minutes.'M'.$second_m.'S';
     }
 }

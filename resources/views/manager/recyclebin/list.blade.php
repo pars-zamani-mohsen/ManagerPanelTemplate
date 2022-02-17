@@ -82,7 +82,7 @@
                                                 <td>{{ $item['title'] ?? $item['name'] }}</td>
                                                 <td dir="ltr" class="text-start">{{ App\AdditionalClasses\Date::timestampToShamsiDatetime($item['created_at']) }}</td>
                                                 <td dir="ltr" class="text-start">{{ App\AdditionalClasses\Date::timestampToShamsiDatetime($item['deleted_at']) }}</td>
-                                                <td>#{{ $item['publisher']['id'] }}-{{ $item['publisher']['name'] }}</td>
+                                                <td>@if($item['publisher'])#{{ $item['publisher']['id'] }}-{{ $item['publisher']['name'] }}@else کاربر @endif</td>
                                                 <td>
                                                     {{--<a href="{{ url('/'. App\Http\Controllers\HomeController::fetch_manager_pre_url() .'/' . $modulename['en'] . '/' . $s_modulename . '/' . $item['id'] . '/history') }}" title="تاریخجه"> <i class="bi bi-clock-history text-info"></i> </a>--}}
                                                     <a class="_deactive" href="#"> <i class="bi bi-arrow-repeat text-warning" data-url="{{ url('/'. App\Http\Controllers\HomeController::fetch_manager_pre_url() .'/' . $modulename['en'] . '/' . $s_modulename . '/' . $item['id'] . '/restore') }}" title="بازیابی"></i> </a>

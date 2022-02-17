@@ -116,43 +116,4 @@ class CustomValidator
         // Now we can get the word count by counting array elments
         return count($words_array);
     }
-
-
-    /**
-     * @param string $cookieName
-     * @return \Illuminate\Http\RedirectResponse|mixed|null
-     */
-    public static function getCookie(string $cookieName)
-    {
-        try {
-            if (Cookie::get($cookieName)) {
-                $cookie_data = json_decode(Cookie::get($cookieName), true);
-            }
-
-        } catch (\Exception $e) {
-            Session::flash('alert', $e->getMessage());
-            return redirect()->back();
-        }
-
-        return $cookie_data ?? null;
-    }
-
-    /**
-     * @param array $data
-     * @param string $cookieName
-     * @return \Illuminate\Http\RedirectResponse|void|null
-     */
-    public static function setCookie(array $data, string $cookieName)
-    {
-        try {
-            $cookie_data = json_encode($data);
-            Cookie::queue(Cookie::make($cookieName, $cookie_data, 120));
-
-        } catch (\Exception $e) {
-            Session::flash('alert', $e->getMessage());
-            return redirect()->back();
-        }
-
-        return $cookie_data ?? null;
-    }
 }

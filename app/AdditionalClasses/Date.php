@@ -1,7 +1,7 @@
 <?php namespace App\AdditionalClasses;
 
-use Morilog\Jalali\CalendarUtils;
 use Morilog\Jalali\Jalalian;
+use Morilog\Jalali\CalendarUtils;
 
 class Date
 {

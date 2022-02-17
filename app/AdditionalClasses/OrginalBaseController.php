@@ -13,7 +13,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\HomeController;
 
-### version: 1.0.2
+### version: 1.0.3
 class OrginalBaseController extends Controller
 {
     protected $parent;
@@ -155,7 +155,6 @@ class OrginalBaseController extends Controller
             Session::flash('alert', $e->getMessage());
             return redirect()->back();
         }
-
     }
 
     /**
@@ -245,7 +244,7 @@ class OrginalBaseController extends Controller
     /**
      * Search
      *
-     * @param Request $request
+     * @param Request $request Id, title, date and ...
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View|null
      */
     public function search(Request $request)
@@ -314,7 +313,7 @@ class OrginalBaseController extends Controller
             $filename = "images/no-picture.png";
             if ($request->hasFile($requestFileName)) {
                 $inputFile = $request->file($requestFileName);
-                $name = time() . '-' . $modulename . '-' . $inputFile->getClientOriginalName();
+                $name = time() . '-' . $modulename . '.' . $request->file($requestFileName)->extension();
                 $folder = config('app.host_public_path') . '/files/' . $modulename;
                 $inputFile->move($folder, $name);
                 $filename = ('/files/' . $modulename . '/' . $name);
@@ -364,6 +363,10 @@ class OrginalBaseController extends Controller
 
                 case 404 :
                     Session::flash('alert', $message ?? 'رکورد مورد نظر یافت نشد!');
+                    return redirect()->back();
+
+                case 409 :
+                    Session::flash('alert', $message ?? 'رکورد تکراری است!');
                     return redirect()->back();
             }
 

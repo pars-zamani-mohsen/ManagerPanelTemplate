@@ -90,10 +90,10 @@ class DashboardController extends Controller
     public static function user_access(string $model_name, string $action_type = 'create')
     {
         try {
-            if ((Auth::user()->isAbleTo([$action_type . '-' . $model_name])) || Auth::user()->hasRole(self::getOwnerRole())) {
+            if ((Auth::user()->isAbleTo([$action_type . '-' . $model_name])) || Auth::user()->hasRole(self::getSystemOwnerRole())) {
                 echo true;
             } else {
-                abort(403, __('errors.' . $action_type . '-no-access'));
+                die(view('manager.error', array('error_message' => __('errors.' . $action_type . '-no-access'))));
             }
             return null;
 

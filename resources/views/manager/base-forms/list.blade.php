@@ -46,6 +46,8 @@
                                 </div>
                                 <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                                     <div class="row justify-content-end">
+	                                @yield('baseform_list_head')
+	                                    
                                         @if(isset($search) && $search)
                                             <div class="col-xxl-1 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end mb-1">
                                                 <a href="#" class="btn btn-light-secondary w-100" data-bs-toggle="modal" data-bs-target="#search"><i class="bi bi-search bi-line-height"></i> </a>
@@ -69,30 +71,26 @@
                                             </div>
                                         @endif
                                         @if(isset($navigation) && $navigation)
-                                            <div
-                                                class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end">
-                                                <a href="{{ url('/'. App\Http\Controllers\HomeController::fetch_manager_pre_url() .'/' . $navigation['url']) }}"
-                                                   class="btn btn-primary w-100"><i
-                                                        class="bi {{ $navigation['icon'] }} bi-line-height"></i> {{ $navigation['title'] }} </a>
+                                            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end">
+                                                <a href="{{ url('/'. App\Http\Controllers\HomeController::fetch_manager_pre_url() .'/' . $navigation['url']) }}" class="btn btn-primary w-100">
+                                                    <i class="bi {{ $navigation['icon'] }} bi-line-height"></i> {{ $navigation['title'] }} </a>
                                             </div>
                                         @endif
 
                                         @if(isset($is_related_list) && $is_related_list)
-                                            <div
-                                               class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end">
-                                                <a href="{{ url('/'. App\Http\Controllers\HomeController::fetch_manager_pre_url() .'/' . $modulename['en']) }}"
-                                                  class="btn btn-primary w-100"><i
-                                                       class="bi bi-arrow-left-circle bi-line-height"></i> بازگشت </a>
+                                            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end">
+                                                <a href="{{ url('/'. App\Http\Controllers\HomeController::fetch_manager_pre_url() .'/' . $modulename['en']) }}" class="btn btn-primary w-100">
+                                                    <i class="bi bi-arrow-left-circle bi-line-height"></i> بازگشت </a>
                                             </div>
                                         @else
                                             @if(!isset($onlylist) || !$onlylist)
-                                                <div
-                                                   class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end">
-                                                    <a href="{{ url('/'. App\Http\Controllers\HomeController::fetch_manager_pre_url() .'/' . $modulename['en'] . '/create') }}"
-                                                      class="btn btn-primary w-100"><i
-                                                           class="bi bi-plus-square-dotted bi-line-height"></i> ایجاد
-                                                   </a>
-                                                </div>
+                                                @if((Auth::user()->isAbleTo(['create-' . $modulename['model']]))  || Auth::user()->hasRole(\App\Http\Controllers\DashboardController::getSystemOwnerRole()))
+                                                    <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end">
+                                                        <a href="{{ url('/'. App\Http\Controllers\HomeController::fetch_manager_pre_url() .'/' . $modulename['en'] . '/create') }}" class="btn btn-primary w-100">
+                                                            <i class="bi bi-plus-square-dotted bi-line-height"></i> ایجاد
+                                                        </a>
+                                                    </div>
+                                                @endif
                                             @endif
                                         @endif
                                     </div>
@@ -101,7 +99,7 @@
                         </div>
                         <div class="card-content">
                             <!-- table hover -->
-                            @if((Auth::user()->isAbleTo(['create-' . $modulename['model']]))  || Auth::user()->hasRole(\App\Http\Controllers\DashboardController::getOwnerRole()))
+                            @if((Auth::user()->isAbleTo(['show-' . $modulename['model']]))  || Auth::user()->hasRole(\App\Http\Controllers\DashboardController::getSystemOwnerRole()))
                                 <div class="table-responsive">
                                     @yield('table')
                                 </div>

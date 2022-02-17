@@ -43,16 +43,12 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-12 invisible">
-                                        <div class="form-group">
-                                            <label for="permission">دسترسی <i class="new-user-req text-danger"> * </i> </label>
-                                            <select name="" id="permission" class="form-select">
-                                                <option value="">انتخاب کنید</option>
-                                                {{--@foreach($permission as $item)
-                                                    <option value="{{ $item->id }}" @if(isset($This) && $This['permission_id'] == $item->id || old('permission') == $item->id) selected @endif>
-                                                        #{{ $item->id }}-{{ $item->display_name }} ({{ $item->name }})</option>
-                                                @endforeach--}}
-                                            </select>
+                                    <div class="col-md-6 col-12">
+                                        <div class="col-xxl-3 col-lg-4 col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label class="invisible" for="btnSelectAll">انتخاب همه<i class="new-user-req text-danger"> * </i> </label>
+                                                <input type="button" name="btnSelectAll" id="btnSelectAll" class="btn btn-primary w-100" value="فعال کردن همه" onclick="toggleSelect()">
+                                            </div>
                                         </div>
                                     </div>
 
@@ -62,7 +58,7 @@
                                             <div class="form-check">
                                                 <div class="custom-control custom-checkbox">
                                                     <label class="form-check-label" for="permission-{{ $item['id'] }}">{{ $item['display_name'] }}</label>
-                                                    <input type="checkbox" class="form-check-input form-check-info" name="permission-{{ $item['id'] }}" id="permission-{{ $item['id'] }}"
+                                                    <input type="checkbox" class="form-check-input form-check-info select-role" name="permission-{{ $item['id'] }}" id="permission-{{ $item['id'] }}"
                                                            @if(isset($selected_permition) && in_array($item['id'], $selected_permition)) checked @endif>
                                                 </div>
                                             </div>
@@ -91,6 +87,23 @@
 @endsection
 @section('script')
     <script>
+        function toggleSelect() {
+            let status = true;
+            let btn = document.getElementById('btnSelectAll');
+            if(btn.value != 'فعال کردن همه'){
+                status = false;
+            }
+
+            let checkboxes = document.getElementsByClassName('select-role');
+            for (let i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = status;
+            }
+
+            if(status) document.getElementById('btnSelectAll').value = 'غیر فعال کردن همه';
+            else document.getElementById('btnSelectAll').value = 'فعال کردن همه';
+
+        }
+
         function redirect_to() {
             let role = document.getElementById('role');
             window.location.replace('{{ url("/_manager/permissionToRole/create") }}/' + role.value)
