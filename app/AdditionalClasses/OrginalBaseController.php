@@ -13,7 +13,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\HomeController;
 
-### version: 1.0.3
+### version: 1.0.4
 class OrginalBaseController extends Controller
 {
     protected $parent;
@@ -310,7 +310,7 @@ class OrginalBaseController extends Controller
     public function uploadfile($request, $modulename, $requestFileName = 'file')
     {
         try {
-            $filename = "images/no-picture.png";
+            $filename = "/images/no-picture.png";
             if ($request->hasFile($requestFileName)) {
                 $inputFile = $request->file($requestFileName);
                 $name = time() . '-' . $modulename . '.' . $request->file($requestFileName)->extension();
@@ -359,6 +359,10 @@ class OrginalBaseController extends Controller
 
                 case 400 :
                     Session::flash('alert', $message ?? 'درخواست نامعتبر!');
+                    return redirect()->back();
+
+                case 403 :
+                    Session::flash('alert', $message ?? 'اجازه ویرایش رکورد را ندارید!');
                     return redirect()->back();
 
                 case 404 :

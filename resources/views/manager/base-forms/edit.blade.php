@@ -28,6 +28,7 @@
                     </div>
 
                     <div class="col-12 text-end">
+                        @yield('baseform_edit_head')
                         <a href="{{ url('/'. App\Http\Controllers\HomeController::fetch_manager_pre_url() .'/' . $modulename['en']) }}" class="btn btn-outline-primary col-xxl-3 col-lg-6 col-md-3 col-md-6 col-12">
                             <i class="bi bi-arrow-left-circle bi-line-height"></i> بازگشت </a>
                     </div>

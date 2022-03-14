@@ -19,9 +19,7 @@
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a
-                                   href="{{ url('/' . App\Http\Controllers\HomeController::fetch_manager_pre_url()) }}">داشبورد</a>
-                           </li>
+                            <li class="breadcrumb-item"><a href="{{ url('/' . App\Http\Controllers\HomeController::fetch_manager_pre_url()) }}">داشبورد</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $modulename['fa'] }}</li>
                         </ol>
                     </nav>
@@ -41,54 +39,42 @@
                                     <div class="row justify-content-start">
                                         <div class="col">
                                             <h4 class="card-title">{{ $modulename['fa'] }}</h4>
+                                            <span class="avatar avatar-sm bg-primary text-white p-1" style="font-size: 10px;position: absolute;top: 10px;right: 5px;">
+                                                <b style="min-width: 15px;min-height: 15px;">{{ $all->total() }}</b>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                                     <div class="row justify-content-end">
-	                                @yield('baseform_list_head')
-	                                    
+                                        @yield('baseform_list_head')
+
                                         @if(isset($search) && $search)
                                             <div class="col-xxl-1 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end mb-1">
                                                 <a href="#" class="btn btn-light-secondary w-100" data-bs-toggle="modal" data-bs-target="#search"><i class="bi bi-search bi-line-height"></i> </a>
                                             </div>
                                         @endif
                                         @if(isset($import) && $import)
-                                            <div
-                                               class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end">
-                                                <a href="{{ url('/'. App\Http\Controllers\HomeController::fetch_manager_pre_url() .'/' . $modulename['en'] . '/import/excel') }}"
-                                                  class="btn btn-outline-info w-100"><i
-                                                       class="bi bi-upload bi-line-height"></i> ورود اطلاعات </a>
+                                            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end mb-1">
+                                                <a href="{{ url('/'. App\Http\Controllers\HomeController::fetch_manager_pre_url() .'/' . $modulename['en'] . '/import/excel') }}" class="btn btn-outline-info w-100"><i class="bi bi-upload bi-line-height"></i> ورود اطلاعات </a>
                                             </div>
                                         @endif
+
                                         @if(isset($export) && $export)
-                                            <div
-                                               class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end">
-                                                <button type="button" class="btn btn-outline-info w-100"
-                                                       data-bs-toggle="modal" data-bs-target="#inlineForm"><i
-                                                       class="bi bi-download bi-line-height"></i> خروجی اکسل
-                                               </button>
-                                            </div>
-                                        @endif
-                                        @if(isset($navigation) && $navigation)
-                                            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end">
-                                                <a href="{{ url('/'. App\Http\Controllers\HomeController::fetch_manager_pre_url() .'/' . $navigation['url']) }}" class="btn btn-primary w-100">
-                                                    <i class="bi {{ $navigation['icon'] }} bi-line-height"></i> {{ $navigation['title'] }} </a>
+                                            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end mb-1">
+                                                <button type="button" class="btn btn-outline-info w-100" data-bs-toggle="modal" data-bs-target="#inlineForm"><i class="bi bi-download bi-line-height"></i> خروجی اکسل </button>
                                             </div>
                                         @endif
 
                                         @if(isset($is_related_list) && $is_related_list)
-                                            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end">
-                                                <a href="{{ url('/'. App\Http\Controllers\HomeController::fetch_manager_pre_url() .'/' . $modulename['en']) }}" class="btn btn-primary w-100">
-                                                    <i class="bi bi-arrow-left-circle bi-line-height"></i> بازگشت </a>
+                                            <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end mb-1">
+                                                <a href="{{ url('/'. App\Http\Controllers\HomeController::fetch_manager_pre_url() .'/' . $modulename['en']) }}" class="btn btn-primary w-100"><i class="bi bi-arrow-left-circle bi-line-height"></i> بازگشت </a>
                                             </div>
                                         @else
                                             @if(!isset($onlylist) || !$onlylist)
-                                                @if((Auth::user()->isAbleTo(['create-' . $modulename['model']]))  || Auth::user()->hasRole(\App\Http\Controllers\DashboardController::getSystemOwnerRole()))
-                                                    <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end">
-                                                        <a href="{{ url('/'. App\Http\Controllers\HomeController::fetch_manager_pre_url() .'/' . $modulename['en'] . '/create') }}" class="btn btn-primary w-100">
-                                                            <i class="bi bi-plus-square-dotted bi-line-height"></i> ایجاد
-                                                        </a>
+                                                @if((Auth::user()->isAbleTo(['create-' . $modulename['model']]))  || Auth::user()->hasRole(\App\Http\Controllers\DashboardController::getOwnerRole()))
+                                                    <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 text-end mb-1">
+                                                        <a href="{{ url('/'. App\Http\Controllers\HomeController::fetch_manager_pre_url() .'/' . $modulename['en'] . '/create') }}" class="btn btn-primary w-100"><i class="bi bi-plus-square-dotted bi-line-height"></i> ایجاد </a>
                                                     </div>
                                                 @endif
                                             @endif
@@ -99,7 +85,7 @@
                         </div>
                         <div class="card-content">
                             <!-- table hover -->
-                            @if((Auth::user()->isAbleTo(['show-' . $modulename['model']]))  || Auth::user()->hasRole(\App\Http\Controllers\DashboardController::getSystemOwnerRole()))
+                            @if((Auth::user()->isAbleTo(['show-' . $modulename['model']]))  || Auth::user()->hasRole(\App\Http\Controllers\DashboardController::getOwnerRole()))
                                 <div class="table-responsive">
                                     @yield('table')
                                 </div>
@@ -130,7 +116,7 @@
                                 <div class="form-group">
                                     <label for="field">عبارت مورد نظر را در کادر زیر وارد کنید <small class="text-danger">(آیدی، متن، تاریخ و ...)</small></label>
                                     <input type="text" name="field" id="field" class="form-control" value="" autofocus required autocomplete="field">
-                                    <small>ستون های مرتبط(مانند کشور، خدمت و ...) را با آیدی آن جستجو کنید مثال: #38</small>
+                                    <small>ستون های مرتبط(مانند کشور، خدمت و ...) را با آیدی جستجو کنید</small>
                                 </div>
                             </div>
                             <div class="col-12">
