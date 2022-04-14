@@ -11,6 +11,44 @@ use Illuminate\Support\Facades\Session;
 class Schema
 {
     /**
+     * Create schema for product
+     *
+     * @param $instance
+     * @return \Illuminate\Http\RedirectResponse|string|null
+     */
+    public function createProductSchema($instance)
+    {
+        try {
+            if (!$instance) return null;
+
+            $schema = array(
+                '@context' => 'https://schema.org',
+                '@type' => "Product",
+                'name' => $instance->title,
+                'image' => asset("/images/product/$instance->pic1"),
+                'description' => $instance->meta_desc,
+                'brand' => array('@type' => 'Brand', 'name' => 'پارس پندار نهاد'),
+//                'offers' => array(
+//                    '@type' => 'Offer',
+//                    'url' => \url("/course/$instance->slug"),
+//                    "priceCurrency" => "IRR",
+//                    "price" => floatval($instance->price) * 10,
+//                    "priceValidUntil" => date('Y-m-d'),
+//                    "availability" => "https://schema.org/InStock",
+//                    "itemCondition" => "https://schema.org/UsedCondition"
+//                ),
+            );
+
+        } catch (\Exception $e) {
+            Session::flash('alert', $e->getMessage());
+            return redirect()->back();
+        }
+
+        // return $schema;
+        return '<script type="application/ld+json">' . json_encode($schema) . '</script>';
+    }
+
+    /**
      * Create schema for article and blog and news
      *
      * @param $instance
