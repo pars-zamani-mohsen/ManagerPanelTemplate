@@ -12,10 +12,14 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\HomeController;
+use App\Traits\AuthorizesRoleOrPermission;
 
-### version: 1.0.4
+### version: 1.0.5
 class OrginalBaseController extends Controller
 {
+
+    use AuthorizesRoleOrPermission;
+
     protected $parent;
     protected $instance;
     protected $modulename;

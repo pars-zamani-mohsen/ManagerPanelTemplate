@@ -19,15 +19,20 @@ Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name(
 /* Clear laravel cache */
 Route::get('/cc', 'UserController@clear')->name('Clear-cache');
 
-/* CRS */
-Route::middleware(['cors'])->post('/score/calc', 'CrsResultController@store');
-
 
 /**
  * Manager panel
  */
 Route::group(['prefix' => '/_manager', 'middleware' => 'auth'], function(){
     Route::get('/dashboard', 'DashboardController@index')->name('Dashboard');
+
+    // Blog
+/*    $model = \App\Blog::$modulename;
+    Route::resource("/" . $model['en'], $model['model'] . "Controller");
+    Route::get($model['en'] . "/{id}/delete", $model['model'] . "Controller@destroy")->name($model['model'] . ".destroy");
+    Route::get($model['en'] . "/{id}/activation", $model['model'] . "Controller@activation")->name($model['model'] . ".activation");
+    Route::get($model['en'] . "/{id}/history", $model['model'] . "Controller@getHistory")->name($model['model'] . ".history");
+    Route::get($model['en'] . "/module/search", $model['model'] . "Controller@search")->name($model['model'] . ".search");*/
 
     // PermissionToRole
     Route::resource('/permissionToRole', 'PermissionToRoleController');
@@ -47,14 +52,6 @@ Route::group(['prefix' => '/_manager', 'middleware' => 'auth'], function(){
     Route::resource("/" . $model['en'], $model['model'] . "Controller");
     Route::get($model['en'] . "/{id}/delete", $model['model'] . "Controller@destroy")->name($model['model'] . ".destroy");
 //    Route::get($model['en'] . "/{id}/activation", $model['model'] . "Controller@activation")->name($model['model'] . ".activation");
-    Route::get($model['en'] . "/{id}/history", $model['model'] . "Controller@getHistory")->name($model['model'] . ".history");
-    Route::get($model['en'] . "/module/search", $model['model'] . "Controller@search")->name($model['model'] . ".search");
-
-    // Blog
-    $model = \App\Blog::$modulename;
-    Route::resource("/" . $model['en'], $model['model'] . "Controller");
-    Route::get($model['en'] . "/{id}/delete", $model['model'] . "Controller@destroy")->name($model['model'] . ".destroy");
-    Route::get($model['en'] . "/{id}/activation", $model['model'] . "Controller@activation")->name($model['model'] . ".activation");
     Route::get($model['en'] . "/{id}/history", $model['model'] . "Controller@getHistory")->name($model['model'] . ".history");
     Route::get($model['en'] . "/module/search", $model['model'] . "Controller@search")->name($model['model'] . ".search");
 

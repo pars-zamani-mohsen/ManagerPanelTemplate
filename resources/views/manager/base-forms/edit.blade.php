@@ -37,7 +37,7 @@
         </div>
 
         @php if(isset($This) && $This) $operation = 'update'; else $operation = 'create'; @endphp
-        @if((Auth::user()->isAbleTo([$operation . '-' . $modulename['model']])) || Auth::user()->hasRole(\App\Http\Controllers\DashboardController::getSystemOwnerRole()))
+        @if((Auth::user()->isAbleTo([$operation . '-' . $modulename['model']])) || Auth::user()->hasRole(\App\Http\Controllers\DashboardController::getOwnerRole()))
             @yield('form')
         @else
             <section id="ticket-form">

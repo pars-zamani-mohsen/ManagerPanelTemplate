@@ -177,6 +177,9 @@ class UserController extends BaseController
     {
         try {
             Artisan::call('cache:clear');
+            Artisan::call('config:clear');
+            Artisan::call('view:clear');
+            Artisan::call('route:cache');
             Artisan::call('config:cache');
             return 'completed...';
 

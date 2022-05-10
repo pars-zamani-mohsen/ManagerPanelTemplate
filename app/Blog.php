@@ -45,22 +45,15 @@ class Blog extends Model
      * @var array
      */
     protected $casts = [
-        'options' => 'collection',
+        //'options' => 'collection',
     ];
 
     /**
-     * The attribute for commentable record.
+     * The attributes that aren't mass assignable.
      *
-     * @var bool false|true
+     * @var array
      */
-    public static $commentable = true;
-
-    /**
-     * The attribute for showing publisher details.
-     *
-     * @var bool false|true
-     */
-    public static $publisher = true;
+    public $guarded = [];
 
     /**
      * Save model event log
@@ -70,14 +63,28 @@ class Blog extends Model
     public static function boot()
     {
         parent::boot();
-        static::creating(function ($item) { \App\Http\Controllers\DashboardController::user_access(self::$modulename['model']); });
-        static::created(function ($item) { ActivityLogController::savelog('create', self::$modulename['model'], $item['id'], Auth::id(), $item); });
-        static::updating(function ($item) { \App\Http\Controllers\DashboardController::user_access(self::$modulename['model'], 'update'); });
-        static::updated(function ($item) { ActivityLogController::savelog('update', self::$modulename['model'], $item['id'], Auth::id(), $item); });
-        static::deleting(function ($item) { \App\Http\Controllers\DashboardController::user_access(self::$modulename['model'], 'delete'); });
-        static::deleted(function ($item) { ActivityLogController::savelog('delete', self::$modulename['model'], $item['id'], Auth::id(), $item); });
+        static::creating(function ($item) {
+            if (Auth::user()) \App\Http\Controllers\DashboardController::user_access(self::$modulename['model']);
+        });
+        static::created(function ($item) {
+            if (Auth::user()) ActivityLogController::savelog('create', self::$modulename['model'], $item['id'], Auth::id() ?? 0, $item);
+        });
+        static::updating(function ($item) {
+            if (Auth::user()) \App\Http\Controllers\DashboardController::user_access(self::$modulename['model'], 'update');
+        });
+        static::updated(function ($item) {
+            if (Auth::user()) ActivityLogController::savelog('update', self::$modulename['model'], $item['id'], Auth::id() ?? 0, $item);
+        });
+        static::deleting(function ($item) {
+            if (Auth::user()) \App\Http\Controllers\DashboardController::user_access(self::$modulename['model'], 'delete');
+        });
+        static::deleted(function ($item) {
+            if (Auth::user()) ActivityLogController::savelog('delete', self::$modulename['model'], $item['id'], Auth::id() ?? 0, $item);
+        });
         return false;
     }
+
+    # Popular functions
 
     /**
      * Check active item
@@ -90,7 +97,6 @@ class Blog extends Model
         return $query->where('active', 1);
     }
 
-    # Popular functions
     /**
      * fetch selected record
      *
@@ -162,9 +168,9 @@ class Blog extends Model
         return ("\App\\" . self::$modulename['model'])::select('id', 'title', 'created_at', 'deleted_at', 'created_by')->onlyTrashed()->orderBy('id', 'DESC')->paginate($limit);
     }
 
-
-    # Relations
-
+    /**
+     * Relations
+     */
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
